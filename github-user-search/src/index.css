@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   color-scheme: light dark;
@@ -13,11 +12,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
 a {
   @apply font-medium text-blue-600 hover:text-blue-800 no-underline;
 }
-
 
 @media (prefers-color-scheme: light) {
   :root {
