@@ -1,8 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
 
-const fetchUserData = async (username) => {
-  const response = await axios.get(`https://api.github.com/users/${username}`);
-  return response.data;
+export const advancedSearchUsers = async ({ username, location, minRepos }) => {
+  const query = [
+    username && `${username}`,
+    location && `location:${location}`,
+    minRepos && `repos:>${minRepos}`,
+  ].filter(Boolean).join('+');
+
+  const response = await axios.get(`https://api.github.com/search/users?q=${query}`);
+  return response.data.items;
 };
-
-export default fetchUserData;
