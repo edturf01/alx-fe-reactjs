@@ -4,7 +4,7 @@ import React, { useState } from "react";
 function AddRecipeForm() {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [instructions, setInstructions] = useState("");
+  const [steps, setSteps] = useState(""); // renamed
   const [errors, setErrors] = useState({});
 
   const validate = () => {
@@ -12,7 +12,7 @@ function AddRecipeForm() {
     if (!title.trim()) newErrors.title = "Title is required";
     if (!ingredients.trim() || ingredients.split(",").length < 2)
       newErrors.ingredients = "At least 2 ingredients required (comma-separated)";
-    if (!instructions.trim()) newErrors.instructions = "Instructions are required";
+    if (!steps.trim()) newErrors.steps = "Steps are required"; // renamed
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -25,7 +25,7 @@ function AddRecipeForm() {
       id: Date.now(),
       name: title,
       ingredients: ingredients.split(",").map((i) => i.trim()),
-      instructions: instructions.split(".").map((s) => s.trim()).filter(Boolean),
+      steps: steps.split(".").map((s) => s.trim()).filter(Boolean), // renamed
       image: "https://via.placeholder.com/400x300", // placeholder image
     };
 
@@ -35,7 +35,7 @@ function AddRecipeForm() {
     // Clear form
     setTitle("");
     setIngredients("");
-    setInstructions("");
+    setSteps("");
     setErrors({});
   };
 
@@ -69,17 +69,17 @@ function AddRecipeForm() {
           )}
         </div>
 
-        {/* Instructions */}
+        {/* Steps */}
         <div>
-          <label className="block font-medium mb-1">Instructions (period-separated)</label>
+          <label className="block font-medium mb-1">Preparation Steps (period-separated)</label>
           <textarea
-            value={instructions}
-            onChange={(e) => setInstructions(e.target.value)}
+            value={steps}
+            onChange={(e) => setSteps(e.target.value)}
             className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
             rows="4"
           ></textarea>
-          {errors.instructions && (
-            <p className="text-red-500 text-sm mt-1">{errors.instructions}</p>
+          {errors.steps && (
+            <p className="text-red-500 text-sm mt-1">{errors.steps}</p>
           )}
         </div>
 
