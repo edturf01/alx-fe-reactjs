@@ -1,3 +1,4 @@
+// src/components/RecipeDetail.jsx
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import recipesData from "../data.json"; // adjust path if needed
@@ -28,9 +29,9 @@ function RecipeDetail() {
       </section>
 
       <section>
-        <h2 className="text-2xl font-semibold mb-2">Cooking Instructions</h2>
+        <h2 className="text-2xl font-semibold mb-2">Instructions</h2>
         <ol className="list-decimal list-inside space-y-2">
-          {recipe.steps.map((step, idx) => (
+          {recipe.instructions.map((step, idx) => (
             <li key={idx}>{step}</li>
           ))}
         </ol>

@@ -1,4 +1,4 @@
-
+// src/components/RecipeCard.jsx
 import { Link } from "react-router-dom";
 
 function RecipeCard({ recipe }) {
