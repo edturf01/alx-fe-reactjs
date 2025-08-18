@@ -1,15 +1,5 @@
 import React from "react";
-import { Formik, Form, ErrorMessage } from "formik";
-import * as Yup from "yup";
-
-// Validation schema using Yup
-const validationSchema = Yup.object({
-  username: Yup.string().required("Username is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-});
+import { Formik, Form } from "formik";
 
 function FormikForm() {
   const initialValues = {
@@ -18,7 +8,27 @@ function FormikForm() {
     password: "",
   };
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = (values, { setErrors, resetForm }) => {
+    const newErrors = {};
+
+    // Explicit field checks
+    if (!values.username) {
+      newErrors.username = "Username is required";
+    }
+    if (!values.email) {
+      newErrors.email = "Email is required";
+    }
+    if (!values.password) {
+      newErrors.password = "Password is required";
+    }
+
+    setErrors(newErrors);
+
+    // Stop submission if errors exist
+    if (Object.keys(newErrors).length > 0) {
+      return;
+    }
+
     // Mock API simulation
     console.log("User registered (Formik):", values);
     alert("Registration successful with Formik!");
@@ -28,12 +38,8 @@ function FormikForm() {
   return (
     <div className="p-4 max-w-md mx-auto bg-green-100 rounded-lg shadow-md mt-6">
       <h2 className="text-xl font-bold mb-4">Register (Formik)</h2>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ values, handleChange }) => (
+      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+        {({ values, handleChange, errors }) => (
           <Form className="space-y-3">
             <div>
               <input
@@ -44,11 +50,9 @@ function FormikForm() {
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
               />
-              <ErrorMessage
-                name="username"
-                component="div"
-                className="text-red-500 text-sm"
-              />
+              {errors.username && (
+                <p className="text-red-500 text-sm">{errors.username}</p>
+              )}
             </div>
 
             <div>
@@ -60,11 +64,9 @@ function FormikForm() {
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
               />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className="text-red-500 text-sm"
-              />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
             </div>
 
             <div>
@@ -76,11 +78,9 @@ function FormikForm() {
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
               />
-              <ErrorMessage
-                name="password"
-                component="div"
-                className="text-red-500 text-sm"
-              />
+              {errors.password && (
+                <p className="text-red-500 text-sm">{errors.password}</p>
+              )}
             </div>
 
             <button
