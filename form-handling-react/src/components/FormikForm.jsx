@@ -1,12 +1,14 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
 // Validation schema using Yup
 const validationSchema = Yup.object({
   username: Yup.string().required("Username is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
 });
 
 function FormikForm() {
@@ -31,56 +33,64 @@ function FormikForm() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        <Form className="space-y-3">
-          <div>
-            <Field
-              type="text"
-              name="username"
-              placeholder="Username"
-              className="w-full p-2 border rounded"
-            />
-            <ErrorMessage
-              name="username"
-              component="div"
-              className="text-red-500 text-sm"
-            />
-          </div>
+        {({ values, handleChange }) => (
+          <Form className="space-y-3">
+            <div>
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={values.username}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              />
+              <ErrorMessage
+                name="username"
+                component="div"
+                className="text-red-500 text-sm"
+              />
+            </div>
 
-          <div>
-            <Field
-              type="email"
-              name="email"
-              placeholder="Email"
-              className="w-full p-2 border rounded"
-            />
-            <ErrorMessage
-              name="email"
-              component="div"
-              className="text-red-500 text-sm"
-            />
-          </div>
+            <div>
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={values.email}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className="text-red-500 text-sm"
+              />
+            </div>
 
-          <div>
-            <Field
-              type="password"
-              name="password"
-              placeholder="Password"
-              className="w-full p-2 border rounded"
-            />
-            <ErrorMessage
-              name="password"
-              component="div"
-              className="text-red-500 text-sm"
-            />
-          </div>
+            <div>
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={values.password}
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className="text-red-500 text-sm"
+              />
+            </div>
 
-          <button
-            type="submit"
-            className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
-          >
-            Register
-          </button>
-        </Form>
+            <button
+              type="submit"
+              className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
+            >
+              Register
+            </button>
+          </Form>
+        )}
       </Formik>
     </div>
   );
