@@ -1,52 +1,46 @@
-import React from "react";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const fetchPosts = async () => {
-  const res = await fetch("https://jsonplaceholder.typicode.com/posts");
-  if (!res.ok) throw new Error("Network response was not ok");
-  return res.json();
+  const { data } = await axios.get("https://jsonplaceholder.typicode.com/posts");
+  return data;
 };
 
 export default function PostsComponent() {
   const {
-    data,
-    error,
+    data: posts,
     isLoading,
     isError,
+    error,
     refetch,
-    isFetching,
-    dataUpdatedAt
   } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
+    cacheTime: 1000 * 60 * 5, 
+    staleTime: 1000 * 60, 
+    refetchOnWindowFocus: false, 
+    keepPreviousData: true, 
   });
 
-  if (isLoading) return <p>Loading posts…</p>;
-  if (isError) return <p style={{ color: "red" }}>Error: {error.message}</p>;
-
-  const lastUpdated = new Date(dataUpdatedAt).toLocaleTimeString();
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error: {error.message}</p>;
 
   return (
     <div>
-      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-        <button onClick={() => refetch()}>Refetch</button>
-        {isFetching && <span>Refreshing…</span>}
-        <span style={{ opacity: 0.7 }}>Last updated: {lastUpdated}</span>
-      </div>
-
-      <ul style={{ marginTop: 16 }}>
-        {(data ?? []).slice(0, 10).map((post) => (
-          <li key={post.id} style={{ marginBottom: 12 }}>
-            <b>{post.title}</b>
-            <div>{post.body}</div>
+      <h2 className="text-xl font-bold mb-2">Posts</h2>
+      <button
+        onClick={() => refetch()}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Refetch Posts
+      </button>
+      <ul className="mt-4">
+        {posts.map((post) => (
+          <li key={post.id} className="border-b py-2">
+            {post.title}
           </li>
         ))}
       </ul>
-
-      <p style={{ marginTop: 16, opacity: 0.8 }}>
-        Tip: Navigate away (Home) and back to Posts within 60s — data should load
-        instantly from cache (no network).
-      </p>
     </div>
   );
 }
