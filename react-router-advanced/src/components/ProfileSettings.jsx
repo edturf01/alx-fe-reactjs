@@ -1,7 +1,12 @@
 import React from "react";
 
 function ProfileSettings() {
-  return <h2>Update your profile settings here</h2>;
+  return (
+    <div>
+      <h3>Profile Settings</h3>
+      <p>This is the Profile Settings section.</p>
+    </div>
+  );
 }
 
 export default ProfileSettings;
