@@ -1,39 +1,36 @@
-// src/__tests__/TodoList.test.jsx
-import React from "react";
+// src/components/TodoList.test.jsx
 import { render, screen, fireEvent } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import TodoList from "../TodoList";
+import TodoList from "./TodoList";
 
 describe("TodoList Component", () => {
-  test("renders initial todos", () => {
+  test("renders input and button", () => {
     render(<TodoList />);
-    expect(screen.getByText("Learn React")).toBeInTheDocument();
-    expect(screen.getByText("Build a Todo App")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/add a new todo/i)).toBeInTheDocument();
+    expect(screen.getByText(/add/i)).toBeInTheDocument();
   });
 
-  test("adds a new todo", () => {
+  test("adds a todo", () => {
     render(<TodoList />);
-    const input = screen.getByPlaceholderText("New Todo");
+    const input = screen.getByPlaceholderText(/add a new todo/i);
+    const button = screen.getByText(/add/i);
+
     fireEvent.change(input, { target: { value: "Test Todo" } });
-    fireEvent.click(screen.getByText("Add"));
-    expect(screen.getByText("Test Todo")).toBeInTheDocument();
-  });
+    fireEvent.click(button);
 
-  test("toggles todo completion", () => {
-    render(<TodoList />);
-    const todo = screen.getByText("Learn React");
-    fireEvent.click(todo);
-    expect(todo).toHaveStyle("text-decoration: line-through");
+    expect(screen.getByText("Test Todo")).toBeInTheDocument();
   });
 
   test("deletes a todo", () => {
     render(<TodoList />);
-    const todo = screen.getByText("Learn React");
+    const input = screen.getByPlaceholderText(/add a new todo/i);
+    const button = screen.getByText(/add/i);
 
-    // Select the Delete button next to the first todo
-    const deleteButtons = screen.getAllByText("Delete");
-    fireEvent.click(deleteButtons[0]);
+    fireEvent.change(input, { target: { value: "Delete Me" } });
+    fireEvent.click(button);
 
-    expect(todo).not.toBeInTheDocument();
+    const deleteBtn = screen.getByText(/delete/i);
+    fireEvent.click(deleteBtn);
+
+    expect(screen.queryByText("Delete Me")).not.toBeInTheDocument();
   });
 });

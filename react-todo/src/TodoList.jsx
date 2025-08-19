@@ -1,48 +1,36 @@
+// src/components/TodoList.jsx
 import React, { useState } from "react";
-import TodoItem from "./components/TodoItem";
 
 const TodoList = () => {
-  const [todos, setTodos] = useState([
-    { id: 1, text: "Learn React", completed: false },
-    { id: 2, text: "Build a Todo App", completed: false }
-  ]);
-  const [newTodo, setNewTodo] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState("");
 
   const addTodo = () => {
-    if (!newTodo) return;
-    setTodos([...todos, { id: Date.now(), text: newTodo, completed: false }]);
-    setNewTodo("");
+    if (input.trim() !== "") {
+      setTodos([...todos, input]);
+      setInput("");
+    }
   };
 
-  const toggleTodo = (id) => {
-    setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  };
-
-  const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+  const removeTodo = (index) => {
+    setTodos(todos.filter((_, i) => i !== index));
   };
 
   return (
     <div>
-      <h1>Todo List</h1>
+      <h2>Todo List</h2>
       <input
-        placeholder="New Todo"
-        value={newTodo}
-        onChange={(e) => setNewTodo(e.target.value)}
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Add a new todo"
       />
       <button onClick={addTodo}>Add</button>
       <ul>
-        {todos.map((todo) => (
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-            toggleTodo={() => toggleTodo(todo.id)}
-            deleteTodo={() => deleteTodo(todo.id)}
-          />
+        {todos.map((todo, index) => (
+          <li key={index}>
+            {todo} <button onClick={() => removeTodo(index)}>Delete</button>
+          </li>
         ))}
       </ul>
     </div>
