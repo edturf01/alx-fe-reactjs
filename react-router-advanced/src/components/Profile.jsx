@@ -1,8 +1,23 @@
+import React from "react";
+import { Routes, Route, Link } from "react-router-dom";
+import ProfileDetails from "./ProfileDetails";
+import ProfileSettings from "./ProfileSettings";
+
+
 function Profile() {
   return (
     <div>
-      <h1>Profile Page</h1>
-      <p>This is the Profile page. You can add nested routes here later.</p>
+      <h2>Profile Page</h2>
+
+      <nav style={{ marginBottom: "1rem" }}>
+        <Link to="details" style={{ marginRight: "1rem" }}>Profile Details</Link>
+        <Link to="settings">Profile Settings</Link>
+      </nav>
+
+      <Routes>
+        <Route path="details" element={<ProfileDetails />} />
+        <Route path="settings" element={<ProfileSettings />} />
+      </Routes>
     </div>
   );
 }
