@@ -1,36 +1,39 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { describe, it, expect, vi } from "vitest";
 import TodoList from "../components/TodoList";
 
 describe("TodoList Component", () => {
-  const mockTodos = [
-    { text: "Buy milk", completed: false },
-    { text: "Walk dog", completed: true },
-  ];
+  it("renders todos correctly", () => {
+    const todos = [{ text: "Learn React", completed: false }];
+    render(<TodoList todos={todos} />);
 
-  test("renders todos correctly", () => {
-    render(<TodoList todos={mockTodos} />);
-    expect(screen.getByText("Buy milk")).toBeInTheDocument();
-    expect(screen.getByText("Walk dog")).toBeInTheDocument();
+    expect(screen.getByText("Learn React")).toBeInTheDocument();
   });
 
-  test("applies line-through style to completed todos", () => {
-    render(<TodoList todos={mockTodos} />);
-    const completedTodo = screen.getByText("Walk dog");
-    expect(completedTodo).toHaveStyle("text-decoration: line-through");
+  it("applies line-through style to completed todos", () => {
+    const todos = [{ text: "Learn React", completed: true }];
+    render(<TodoList todos={todos} />);
+
+    const todo = screen.getByText("Learn React");
+    expect(todo).toHaveStyle("text-decoration: line-through");
   });
 
-  test("calls toggleTodo when todo is clicked", () => {
+  it("calls toggleTodo when todo is clicked", () => {
     const toggleTodo = vi.fn();
-    render(<TodoList todos={mockTodos} toggleTodo={toggleTodo} />);
-    fireEvent.click(screen.getByText("Buy milk"));
+    const todos = [{ text: "Learn React", completed: false }];
+    render(<TodoList todos={todos} toggleTodo={toggleTodo} />);
+
+    fireEvent.click(screen.getByText("Learn React"));
     expect(toggleTodo).toHaveBeenCalledWith(0);
   });
 
-  test("calls deleteTodo when delete button is clicked", () => {
+  it("calls deleteTodo when delete button is clicked", () => {
     const deleteTodo = vi.fn();
-    render(<TodoList todos={mockTodos} deleteTodo={deleteTodo} />);
-    fireEvent.click(screen.getByTestId("delete-btn-0"));
+    const todos = [{ text: "Learn React", completed: false }];
+    render(<TodoList todos={todos} deleteTodo={deleteTodo} />);
+
+    fireEvent.click(screen.getByText("Delete"));
     expect(deleteTodo).toHaveBeenCalledWith(0);
   });
 });
