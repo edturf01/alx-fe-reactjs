@@ -1,10 +1,8 @@
-import React from "react";
-
-const TodoItem = ({ todo, toggleTodo, deleteTodo }) => {
+export default function TodoItem({ todo, onToggle, onDelete }) {
   return (
     <li>
       <span
-        onClick={toggleTodo}
+        onClick={onToggle}
         style={{
           textDecoration: todo.completed ? "line-through" : "none",
           cursor: "pointer"
@@ -12,9 +10,7 @@ const TodoItem = ({ todo, toggleTodo, deleteTodo }) => {
       >
         {todo.text}
       </span>
-      <button onClick={deleteTodo}>Delete</button>
+      <button onClick={onDelete}>Delete</button>
     </li>
   );
-};
-
-export default TodoItem;
+}
